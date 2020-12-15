@@ -73,7 +73,9 @@
 					
 					//判断x，y是否合规，合规返回true
 					isLegalXY:function(x,y){
-						if (x < this.side && x > 0 && y < this.side && y > 0){
+						//必须用类型转换，不然无法比较
+						var side = parseInt(this.side);
+						if ((x <= side && x > 0) && (y <= side && y > 0)){
 							return true;
 						}
 						alert("请输入合规的坐标...");
