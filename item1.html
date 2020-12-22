@@ -2,41 +2,111 @@
 <html>
 	<head>
 		<meta charset="utf-8" />
-		<title>棋盘覆盖问题</title>
+		<title>算法设计程序作业</title>
+		<!--引入bootstrap的css和js-->
+		<link rel="stylesheet" href="bootstrap/css/bootstrap.css" />
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript" src="bootstrap/js/bootstrap.js"></script>
+		
+		<!-- 引入vue -->
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+		
 		<style type="text/css">
 			.chess{margin: 50px;}
 			.chesstable{border: 2px solid;border-collapse: collapse;}
 			.chesstr{height: 20px;border: 1px solid #ccc;}
 			.chesstd{width: 20px;border: 1px solid #ccc;}
 		</style>
-		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 	<body>
 		<div id="app">
-			<h1 align="center">棋盘覆盖问题</h1>
-			<p>
-				问题：在一个2k×2k （k≥0）个方格组成的棋盘中，恰有一个方格与其他方格不同，称该方格为特殊方格。&#10
-				棋盘覆盖问题要求用图（b）所示的4种不同形状的L型骨牌覆盖给定棋盘上除特殊方格以外的所有方格，且&#10
-				任何2个L型骨牌不得重叠覆盖。
-			</p>
-			<p>设置棋盘大小：
-				<input type="text" v-model="side" placeholder="请输入棋盘边长(棋盘方格数-1能被3整除)" style="width:300px"/>
-				<!-- <button type="button" v-on:click="creatBlind(side)">生成空白棋盘</button> -->
-			</p>
-			<p>输入特殊方格的位置：
-				<p>
-					x:<input v-model="x"  type="text" /><br>
-					y:<input v-model="y" type="text" />
-				</p>
-			</p>
-			<button type="button" v-on:click="getChessBoard(side,x,y)">L型骨牌覆盖棋盘</button>
-			
-			<div id="chess" class="chess">
-				<table class="chesstable">
-					<tr v-for="(chessrow,indexr) in chessrows" class="chesstr">
-						<td v-for="(chesscol,indexc) in chesscols" class="chesstd" v-bind:style="{background:'rgb('+13*Matrix[indexr][indexc]%256+','+43*Matrix[indexr][indexc]%256+','+73*Matrix[indexr][indexc]%256+')'}"></td>
-					</tr>
-				</table>
+			<div class="container">
+				<!-- 导航栏begin -->
+				<div class="row">
+					<div class="col-md-12">
+						<nav class="navbar navbar-inverse " role="navigation">
+							<div class="container-fluid">
+							<div class="navbar-header">
+								<a class="navbar-brand" href="#">麦狄龙</a>
+							</div>
+							<div>
+								<ul class="nav navbar-nav">
+									<li class="active"><a href="#">棋盘覆盖问题</a></li>
+									<li><a href="#">循环赛日程安排问题 </a></li>
+									<li><a href="#">背包问题</a></li>
+									<li><a href="#">流水作业调度问题</a></li>
+								</ul>
+							</div>
+							</div>
+						</nav>
+					</div>
+				</div>
+				<!-- 导航栏end -->	
+				<!-- 标题begin -->
+				<div class="row">
+					<div class="col-md-12">
+						<h1 align="center">棋盘覆盖问题</h1>
+					</div>
+				</div>
+				<!-- 标题end -->
+				<!-- 题目begin -->
+				<div class="row">
+					<div class="col-md-12">
+						<p>
+							问题：在一个2k×2k （k≥0）个方格组成的棋盘中，恰有一个方格与其他方格不同，称该方格为特殊方格。&#10
+							棋盘覆盖问题要求用图（b）所示的4种不同形状的L型骨牌覆盖给定棋盘上除特殊方格以外的所有方格，且&#10
+							任何2个L型骨牌不得重叠覆盖。
+						</p>
+					</div>
+					<div class="col-md-6" >
+						<img src="img/1.png" >
+					</div>
+				</div>
+				<!-- 题目end -->
+					
+				<!-- 输入参数begin -->
+				<div class="row">
+					<div class="col-md-6">
+						<div class="input-group">
+						    <span class="input-group-addon">请输入棋盘边长</span>
+						    <input type="text" class="form-control" placeholder="请输入棋盘边长(棋盘方格数-1能被3整除)" v-model="side">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="input-group">
+						    <span class="input-group-addon">请输入黑格方位x</span>
+						    <input type="text" class="form-control" placeholder="不能超过边长" v-model="x">
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="input-group">
+						    <span class="input-group-addon">请输入黑哥方位y</span>
+						    <input type="text" class="form-control" placeholder="不能超过边长" v-model="y" @keyup.enter="getChessBoard(side,x,y)">
+						</div>
+					</div>
+				</div>
+				<!-- 输入参数end -->
+				<br>
+				<!-- 生成棋盘按钮begin -->
+				<div class="row">
+					<div class="col-md-12">
+						<button type="button" class="btn btn-primary btn-lg btn-block" v-on:click="getChessBoard(side,x,y)">点击生成棋盘</button>
+					</div>
+				</div>
+				<!-- 生成棋盘按钮end -->
+				<!-- 生成棋盘begin -->
+				<div class="row">
+					<div class="col-md-12">
+						<div id="chess" class="chess">
+							<table class="chesstable">
+								<tr v-for="(chessrow,indexr) in chessrows" class="chesstr">
+									<td v-for="(chesscol,indexc) in chesscols" class="chesstd" v-bind:style="{background:'rgb('+13*Matrix[indexr][indexc]%256+','+43*Matrix[indexr][indexc]%256+','+73*Matrix[indexr][indexc]%256+')'}"></td>
+								</tr>
+							</table>
+						</div>
+					</div>
+				</div>
+				<!-- 生成棋盘end -->
 			</div>
 		</div>
 		<script type="text/javascript">
@@ -55,10 +125,12 @@
 					//判断边长是否合规，合规返回true
 					isLegalSide:function(s){
 						if(s > 0 && s < 200){
+							
+							
 							if ((s * s - 1) % 3 == 0 && s % 2 == 0){
 								return true;
 							}else{
-								alert("方格数减一无法被3整除，棋盘无法被覆盖,请重新输入…")
+								alert("方格数减一无法被3整除,请重新输入棋盘边长…")
 								return false;
 							}
 						}else{
