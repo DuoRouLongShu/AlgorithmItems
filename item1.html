@@ -20,99 +20,216 @@
 	</head>
 	<body>
 		<div id="app">
-			<div class="container">
-				<!-- 导航栏begin -->
+			<div class="container" >	
+				<!-- 标签选项卡begin -->
 				<div class="row">
 					<div class="col-md-12">
-						<nav class="navbar navbar-inverse " role="navigation">
-							<div class="container-fluid">
-							<div class="navbar-header">
-								<a class="navbar-brand" href="#">麦狄龙</a>
+						<ul id="myTab" class="nav nav-tabs">
+							<li class="active"><a href="#chess" data-toggle="tab">棋盘覆盖问题</a></li>
+							<li><a href="#game" data-toggle="tab">循环赛日程安排问题</a></li>
+							<li><a href="#backpack" data-toggle="tab">背包问题</a></li>
+							<li><a href="#production" data-toggle="tab">流水作业调度问题</a></li>
+						</ul>
+					</div>
+				</div>
+				<!-- 标签选项卡end -->
+				
+				<!-- 标签页begin -->
+				<div class="row">
+					<div class="col-md-12">
+						<div id="myTabContent" class="tab-content">
+							<!-- 棋盘问题begin -->
+							<div class="tab-pane fade in active" id="chess">
+								<!-- 标题begin -->
+								<div class="row">
+									<div class="col-md-12">
+										<h3 align="center">棋盘覆盖问题</h3>
+									</div>
+								</div>
+								<!-- 标题end -->
+								<!-- 题目begin -->
+								<div class="row">
+									<div class="col-md-12">
+										<p align="center">问题：在一个2^k×2^k （k≥0）个方格组成的棋盘中，恰有一个方格与其他方格不同，称该方格为特殊方格。</p>
+										<p align="center">棋盘覆盖问题要求用图（b）所示的4种不同形状的L型骨牌覆盖给定棋盘上除特殊方格以外的所有方格，且</p>
+										<p align="center">任何2个L型骨牌不得重叠覆盖。</p>
+									</div>
+									<div class="col-md-6" >
+										<img src="img/1.png" >
+									</div>
+								</div>
+								<!-- 题目end -->
+									
+								<!-- 输入参数begin -->
+								<div class="row">
+									<div class="col-md-6">
+										<div class="input-group">
+										    <span class="input-group-addon">请输入棋盘边长</span>
+										    <input type="text" class="form-control" placeholder="请输入棋盘边长(棋盘方格数-1能被3整除)" v-model="side">
+										</div>
+									</div>
+									<div class="col-md-3">
+										<div class="input-group">
+										    <span class="input-group-addon">请输入黑格方位x</span>
+										    <input type="text" class="form-control" placeholder="不能超过边长" v-model="x">
+										</div>
+									</div>
+									<div class="col-md-3">
+										<div class="input-group">
+										    <span class="input-group-addon">请输入黑哥方位y</span>
+										    <input type="text" class="form-control" placeholder="不能超过边长" v-model="y" @keyup.enter="getChessBoard(side,x,y)">
+										</div>
+									</div>
+								</div>
+								<!-- 输入参数end -->
+								<br>
+								<!-- 生成棋盘按钮begin -->
+								<div class="row">
+									<div class="col-md-12">
+										<button type="button" class="btn btn-primary btn-lg btn-block" v-on:click="getChessBoard(side,x,y)">点击生成棋盘</button>
+									</div>
+								</div>
+								<!-- 生成棋盘按钮end -->
+								<!-- 生成棋盘begin -->
+								<div class="row">
+									<div class="col-md-12">
+										<div class="chess">
+											<table class="chesstable">
+												<tr v-for="(chessrow,indexr) in chessrows" class="chesstr">
+													<td v-for="(chesscol,indexc) in chesscols" class="chesstd" v-bind:style="{background:'rgb('+13*Matrix[indexr][indexc]%256+','+43*Matrix[indexr][indexc]%256+','+73*Matrix[indexr][indexc]%256+')'}"></td>
+												</tr>
+											</table>
+										</div>
+									</div>
+								</div>
+								<!-- 生成棋盘end -->
 							</div>
-							<div>
-								<ul class="nav navbar-nav">
-									<li class="active"><a href="#">棋盘覆盖问题</a></li>
-									<li><a href="#">循环赛日程安排问题 </a></li>
-									<li><a href="#">背包问题</a></li>
-									<li><a href="#">流水作业调度问题</a></li>
-								</ul>
+							<!-- 棋盘问题end -->
+							<!-- 循环赛日程安排问题begin -->
+							<div class="tab-pane fade" id="game">
+								<div class="row">
+									<div class="col-md-12">
+										<h3 align="center">循环赛日程安排问题</h3>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-12">
+										<p>设有n=2^k个选手要进行网球循环赛，要求设计一个满足以下要求的比赛日程表：</p>
+										<p>（1）每个选手必须与其他n-1个选手各赛一次；</p>
+										<p>（2）每个选手一天只能赛一次。</p>
+										<p>按此要求，可将比赛日程表设计成一个 n 行n-1列的二维表，其中，第 i 行第 j 列表示和第 i 个选手在第 j 天比赛的选手。        </p>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-3">
+										<div class="input-group">
+										    <span class="input-group-addon">输入k值</span>
+										    <input type="text" class="form-control" placeholder="k不要超过10" v-model="game_k">
+										</div>
+									</div>
+									<div class="col-md-3">
+										<button type="button" class="btn btn-primary" v-on:click="creatGameTable(game_k)">生成比赛二维表</button>
+									</div>
+								</div>
+								
+								<!-- 生成比赛二维表begin -->
+								<div class="row">
+									<div class="col-md-12">
+										二维表！
+									</div>
+								</div>
+								<!-- 生成比赛二维表end -->
 							</div>
+							<!-- 循环赛日程安排问题end -->
+							<!-- 背包问题begin -->
+							<div class="tab-pane fade" id="backpack">
+								<div class="row">
+									<div class="col-md-12">
+										<h3 align="center">背包问题</h3>
+									</div>
+								</div>
+								<div class="row">
+									<p>给定n个重量为w1，….wn、价值为v1,……,vn的物品和一个承重量为W的背包，</p>
+									<p>求这些物品中<strong style="color: #843534;">最有价值</strong>的一个子集，并且要能够装到背包中</p>
+								</div>
+								<div class="row">
+									<div class="col-lg-3">
+										<div class="input-group">
+										    <span class="input-group-addon">输入物品重量</span>
+										    <input type="text" class="form-control" placeholder="正整数" v-model="pweight">
+										</div>
+									</div>
+									<div class="col-lg-3">
+										<div class="input-group">
+										    <span class="input-group-addon">输入物品价值</span>
+										    <input type="text" class="form-control" placeholder="正整数" v-model="pvalue">
+										</div>
+									</div>
+									<div class="col-md-2">
+										<button type="button" class="btn btn-primary" v-on:click="creatBackQueue(pweight,pvalue)">添加物品到队列</button>
+									</div>
+									<div class="col-md-1">
+										<button type="button" class="btn btn-primary" v-on:click="deleteBackQueue()">清空物品队列</button>
+									</div>
+								</div>
+								<br>
+								<!-- 显示物品重量和价值begin -->
+								<div class="row">
+									<div class="col-md-12">
+										<table class="chesstable">
+											<tr class="chesstr">
+												<td>物品重量</td>
+												<td v-for="pw in pws" class="chesstd" >{{pw}}</td>
+											</tr>
+											<tr class="chesstr">
+												<td>物品价值</td>
+												<td v-for="pv in pvs" class="chesstd" >{{pv}}</td>
+											</tr>
+										</table>
+									</div>
+								</div>
+								<!-- 显示物品重量和价值end -->
+								<br>
+								<div class="row">
+									<div class="col-lg-4">
+										<div class="input-group">
+										    <span class="input-group-addon">输入背包重量</span>
+										    <input type="text" class="form-control" placeholder="正整数" v-model="backpackweight">
+										</div>
+									</div>
+									<div class="col-md-4">
+										<button type="button" class="btn btn-primary" v-on:click="backpackmain">点击生成最有价值子集</button>
+									</div>
+								</div>
+								<br>
+								<div class="row">
+									<div class="col-md-12">
+										<table>
+											<tr >
+												<td>最优解</td>
+												<td v-for="t in ts">{{t}}</td>
+											</tr>
+										</table>
+									</div>
+								</div>
 							</div>
-						</nav>
-					</div>
-				</div>
-				<!-- 导航栏end -->	
-				<!-- 标题begin -->
-				<div class="row">
-					<div class="col-md-12">
-						<h1 align="center">棋盘覆盖问题</h1>
-					</div>
-				</div>
-				<!-- 标题end -->
-				<!-- 题目begin -->
-				<div class="row">
-					<div class="col-md-12">
-						<p>
-							问题：在一个2k×2k （k≥0）个方格组成的棋盘中，恰有一个方格与其他方格不同，称该方格为特殊方格。&#10
-							棋盘覆盖问题要求用图（b）所示的4种不同形状的L型骨牌覆盖给定棋盘上除特殊方格以外的所有方格，且&#10
-							任何2个L型骨牌不得重叠覆盖。
-						</p>
-					</div>
-					<div class="col-md-6" >
-						<img src="img/1.png" >
-					</div>
-				</div>
-				<!-- 题目end -->
-					
-				<!-- 输入参数begin -->
-				<div class="row">
-					<div class="col-md-6">
-						<div class="input-group">
-						    <span class="input-group-addon">请输入棋盘边长</span>
-						    <input type="text" class="form-control" placeholder="请输入棋盘边长(棋盘方格数-1能被3整除)" v-model="side">
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="input-group">
-						    <span class="input-group-addon">请输入黑格方位x</span>
-						    <input type="text" class="form-control" placeholder="不能超过边长" v-model="x">
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="input-group">
-						    <span class="input-group-addon">请输入黑哥方位y</span>
-						    <input type="text" class="form-control" placeholder="不能超过边长" v-model="y" @keyup.enter="getChessBoard(side,x,y)">
+							<!-- 背包问题end -->
+							<!-- 流水作业调度问题begin -->
+							<div class="tab-pane fade" id="production">
+								production!!
+							</div>
+							<!-- 流水作业调度问题end -->
 						</div>
 					</div>
 				</div>
-				<!-- 输入参数end -->
-				<br>
-				<!-- 生成棋盘按钮begin -->
-				<div class="row">
-					<div class="col-md-12">
-						<button type="button" class="btn btn-primary btn-lg btn-block" v-on:click="getChessBoard(side,x,y)">点击生成棋盘</button>
-					</div>
-				</div>
-				<!-- 生成棋盘按钮end -->
-				<!-- 生成棋盘begin -->
-				<div class="row">
-					<div class="col-md-12">
-						<div id="chess" class="chess">
-							<table class="chesstable">
-								<tr v-for="(chessrow,indexr) in chessrows" class="chesstr">
-									<td v-for="(chesscol,indexc) in chesscols" class="chesstd" v-bind:style="{background:'rgb('+13*Matrix[indexr][indexc]%256+','+43*Matrix[indexr][indexc]%256+','+73*Matrix[indexr][indexc]%256+')'}"></td>
-								</tr>
-							</table>
-						</div>
-					</div>
-				</div>
-				<!-- 生成棋盘end -->
+				<!-- 标签页end -->
 			</div>
 		</div>
 		<script type="text/javascript">
 			let app = new Vue({
 				el:'#app',
 				data:{
+					//棋盘问题的变量：
 					side:'',
 					x:'',
 					y:'',
@@ -120,6 +237,19 @@
 					chesscols:[],
 					Matrix:[],
 					nCount:0,
+					
+					//赛程问题的变量：
+					game_k:'',
+					gameArray:[],
+					
+					//背包问题变量
+					pweight:'',
+					pvalue:'',
+					backpackweight:'',
+					pws:[],
+					pvs:[],
+					F:[],
+					ts:[]//物品的最优解数组
 				},
 				methods:{
 					//判断边长是否合规，合规返回true
@@ -219,6 +349,96 @@
 						  this.Matrix[tr+s][tc+s] = t;
 						  this.chessBoard(tr+s,tc+s,tr+s,tc+s,s);
 						}
+					},
+					
+					//生成比赛二维表
+					creatGameTable:function(game_k){
+						if(game_k.length==0){
+							alert("请输入K值…");
+							return;
+						}
+						var k = 1;
+						for (var i = 0; i < game_k; i++) {
+							k*=2;
+						}
+						this.gameArray = new Array(k)
+						
+						
+					},
+				
+					//生成物品队列
+					creatBackQueue:function(pweight,pvalue){
+						if(pweight.length==0||pvalue.length==0){
+							alert("请输入物品重量和价值……")
+							return;
+						}
+						this.pws.push(parseInt(pweight));
+						this.pvs.push(parseInt(pvalue));
+						this.pweight = null;
+						this.pvalue = null;
+					},
+					
+					//清空物品队列
+					deleteBackQueue:function(){
+						this.pws.splice(0,this.pws.length);
+						this.pvs.splice(0,this.pvs.length);
+					},
+					
+					//背包问题记忆化
+					MFKnapsack:function(i,j){
+						var value = 0;
+						if(this.F[i][j] < 0){
+							if (j < parseInt(this.pws[i])){
+								value = this.MFKnapsack(i-1,j)
+							}else{
+								value = this.max(this.MFKnapsack(i-1,j),parseInt(this.pvs[i])+this.MFKnapsack(i-1,j-parseInt(this.pws[i])))
+							}
+							this.F[i][j] = value;
+						}
+						return this.F[i][j];
+					},
+					
+					//求最大值
+					max:function(a,b){
+						if(a>b){
+							return a;
+						}else{
+							return b;
+						}
+					},
+					
+					//背包问题主函数
+					backpackmain:function(){
+						//pws和pvs首端添加0，因为背包的记忆功能算法使用的是Weights[1..n]和Valuess[1..n]
+						this.pws.splice(0,0,0);
+						this.pvs.splice(0,0,0);
+						this.F = new Array(this.pws.length);
+						//初始化值
+						for (var i = 0; i < this.pws.length; i++) {
+							this.F[i] = new Array(parseInt(this.backpackweight)+1)
+							for (var j = 0; j <= parseInt(this.backpackweight); j++) {
+								if(i==0 || j==0){
+									this.F[i][j] = 0;
+								}else{
+									this.F[i][j] = -1;
+								}
+							}
+						}
+						this.MFKnapsack(this.pws.length-1,parseInt(this.backpackweight))
+						//输出最优子集
+						this.things = new Array();
+						var j = parseInt(this.backpackweight);
+						for (var i = this.pws.length-1; i > 0; i--) {
+							if(this.F[i][j] == this.F[i-1][j]){
+								while(this.F[i][j] == this.F[i-1][j]){
+									i--;
+								}
+							}
+							this.ts.push(i)
+							j = j - this.pws[i];
+						}
+						console.log(this.F)
+						console.log(this.ts)
 					}
 				}
 			})
